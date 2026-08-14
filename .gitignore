@@ -17,6 +17,7 @@ dist-ssr
 server/memories/*.json
 server/question-logs/*.json
 server/knowledge/*.json
+server/api-usage.json
 
 # Editor directories and files
 .vscode/*

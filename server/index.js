@@ -12,6 +12,7 @@ import { recognize as ocr } from './baidu-ocr.js'
 import * as knowledge from './knowledge.js'
 import { parseBuffer, compressChunk } from './parser.js'
 import { getTeacherCourses } from './teachers.js'
+import { checkLimit, record, getDailyCost, getBudget } from './api-usage.js'
 import rateLimit from 'express-rate-limit'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -83,6 +84,15 @@ const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: '登录尝试次数过多,请 15 分钟后再试' },
+})
+
+// 知识库上传会触发 DeepSeek 压缩（一次长文档可能多次 API 调用），限得比聊天更严
+const uploadLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 5, // 每分钟最多 5 次上传
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: '上传太频繁了,请稍等一分钟再试' },
 })
 
 // ── Role detection ────────────────────────────────────
@@ -218,7 +228,7 @@ app.post('/api/teacher/knowledge', requireAuth, requireTeacher, (req, res) => {
 })
 
 // POST /api/teacher/knowledge/upload — 上传文件解析入库（超长自动压缩）
-app.post('/api/teacher/knowledge/upload', requireAuth, requireTeacher, upload.single('file'), async (req, res) => {
+app.post('/api/teacher/knowledge/upload', requireAuth, requireTeacher, uploadLimiter, upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '请上传文件' })
   try {
     const raw = await parseBuffer(req.file.buffer, req.file.originalname)
@@ -285,6 +295,11 @@ app.post('/api/chat', requireAuth, chatLimiter, async (req, res) => {
   }))
 
   try {
+    // 每日 API 预算检查：超了直接拒绝，避免烧钱
+    if (!checkLimit()) {
+      return res.status(429).json({ error: `今日 API 预算已用完（${getBudget()} 元/天），请明天再试` })
+    }
+
     // 注入记忆
     const memories = loadMemories(req.session.user.studentId)
     const memoryBlock = memories.length > 0
@@ -307,6 +322,7 @@ app.post('/api/chat', requireAuth, chatLimiter, async (req, res) => {
         ...clean,
       ],
       stream: true,
+      stream_options: { include_usage: true }, // 流式响应也要拿 token 用量来算钱
     })
 
     res.setHeader('Content-Type', 'text/event-stream')
@@ -314,12 +330,20 @@ app.post('/api/chat', requireAuth, chatLimiter, async (req, res) => {
     res.setHeader('Connection', 'keep-alive')
 
     let fullAnswer = ''
+    let usage = null
     for await (const chunk of stream) {
+      if (chunk.usage) usage = chunk.usage
       const content = chunk.choices[0]?.delta?.content || ''
       if (content) {
         fullAnswer += content
         res.write(`data: ${JSON.stringify({ content })}\n\n`)
       }
+    }
+
+    // 记账：本次花费累计进当日预算
+    if (usage) {
+      const cost = record(usage)
+      console.log(`[API 用量] 本次 ¥${cost.toFixed(4)}，今日累计 ¥${getDailyCost().toFixed(4)} / ¥${getBudget()}`)
     }
 
     // 记录学生提问到日志（供教师端查看）

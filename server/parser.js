@@ -1,6 +1,7 @@
 import mammoth from 'mammoth'
 // pdf-parse 必须锁 1.1.1，纯 CJS，ESM 下要这样取 default
 import * as pdfParseNS from 'pdf-parse/lib/pdf-parse.js'
+import { record } from './api-usage.js'
 const pdfParse = pdfParseNS.default
 
 const COMPRESS_THRESHOLD = 4000 // 超过才压缩
@@ -40,6 +41,7 @@ export async function compressChunk(openai, text, title) {
         { role: 'user', content: `资料标题：${title}\n\n资料内容：\n${chunk}` },
       ],
     })
+    record(res.usage) // 压缩也计入每日预算
     parts.push(res.choices[0].message.content)
   }
   return parts.join('\n\n')

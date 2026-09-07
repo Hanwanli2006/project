@@ -88,8 +88,8 @@ function EntrySection({ onStudentLogin, onTeacherLogin }) {
   return (
     <section id="entry" className="features" style={{ paddingTop: 0 }}>
       <h2 className="features__title">选择身份</h2>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 20, maxWidth: 600, margin: '0 auto' }}>
-        <div className="feature-card" style={{ padding: '28px 24px', width: 260, flexShrink: 0 }}>
+      <div className="entry-cards">
+        <div className="feature-card" style={{ padding: '28px 24px' }}>
           <div className="feature-card__icon" style={{ fontSize: 32 }}>🎓</div>
           <h3 className="feature-card__title">学生端</h3>
           <p className="feature-card__desc" style={{ marginBottom: 16 }}>AI 答疑、知识梳理、学术辅助</p>
@@ -106,7 +106,7 @@ function EntrySection({ onStudentLogin, onTeacherLogin }) {
             </button>
           </form>
         </div>
-        <div className="feature-card" style={{ padding: '28px 24px', width: 260, flexShrink: 0 }}>
+        <div className="feature-card" style={{ padding: '28px 24px' }}>
           <div className="feature-card__icon" style={{ fontSize: 32 }}>👨‍🏫</div>
           <h3 className="feature-card__title">教师端</h3>
           <p className="feature-card__desc" style={{ marginBottom: 16 }}>查看学生提问、管理知识库</p>

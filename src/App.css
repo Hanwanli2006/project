@@ -177,6 +177,22 @@
   }
 }
 
+/* 「选择身份」入口卡片：窄屏自动竖排、铺满，避免横向溢出 */
+.entry-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.entry-cards .feature-card {
+  width: 260px;
+  flex: 0 1 260px;
+  max-width: 100%;
+}
+
 .feature-card {
   background: var(--bg-card);
   border-radius: var(--radius-md);
@@ -1133,6 +1149,78 @@
     border: 1px solid #e8e8ed !important;
     white-space: pre-wrap !important;
     word-break: break-word !important;
+  }
+}
+
+/* =============================================
+   Mobile (small screens)
+   ============================================= */
+@media (max-width: 640px) {
+  /* 收紧导航栏，避免文字链接溢出 */
+  .navbar {
+    height: 56px;
+    padding: 0 16px;
+  }
+  .navbar__logo {
+    font-size: 19px;
+  }
+  .navbar__links {
+    gap: 2px;
+  }
+  .navbar__links a {
+    padding: 8px 9px;
+    font-size: 13px;
+  }
+  .navbar__loginBtn {
+    padding: 6px 13px;
+    font-size: 13px;
+  }
+  .navbar__userId {
+    display: none;
+  }
+
+  /* 主体留白与标题收敛，避免内容显得偏左/拥挤 */
+  .hero {
+    padding: 100px 16px 60px;
+  }
+  .hero__title {
+    letter-spacing: -1px;
+  }
+  .hero__subtitle {
+    margin-bottom: 28px;
+  }
+  .features {
+    padding: 56px 16px 48px;
+  }
+  .features__title {
+    font-size: 28px;
+    margin-bottom: 28px;
+  }
+  .feature-card {
+    padding: 28px 20px;
+  }
+
+  /* 入口卡片竖排并铺满整行 */
+  .entry-cards {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .entry-cards .feature-card {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  /* 输入框字号抬到 16px，避免 iOS 聚焦时整页自动放大 */
+  .login-prompt__devForm {
+    flex-direction: column;
+  }
+  .login-prompt__devInput {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px !important;
+  }
+  .entry-cards input {
+    font-size: 16px !important;
   }
 }
 

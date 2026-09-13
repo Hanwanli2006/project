@@ -162,9 +162,9 @@ function KnowledgeManager() {
   return (
     <div>
       <div className="knowledge-header">
-        <h2 className="teacher-main__title" style={{ marginBottom: 0 }}>知识库管理</h2>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <label className="knowledge-add-btn" style={{ cursor: 'pointer' }}>
+        <h2 className="teacher-main__title">知识库管理</h2>
+        <div className="knowledge-header__actions">
+          <label className="knowledge-add-btn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
             {uploading ? '解析压缩中…' : '上传文件'}
             <input type="file" accept=".pdf,.docx,.txt,.md" onChange={handleFileUpload} hidden disabled={uploading} />
@@ -254,7 +254,6 @@ function Navbar({ user, onLogout, scrolled }) {
 function Hero({ onStart }) {
   return (
     <section id="hero" className="hero">
-      <div className="hero__bg" />
       <div className="hero__content">
         <p className="hero__badge">南开大学 · 教师端</p>
         <h1 className="hero__title">掌握学情，<br />管理知识。</h1>
@@ -268,7 +267,7 @@ function Hero({ onStart }) {
 /* ── Teacher Hero ──────────────────────────────── */
 function TeacherHero() {
   return (
-    <section className="features" style={{ paddingTop: 80, paddingBottom: 40 }}>
+    <section className="features teacher-hero">
       <h2 className="features__title">教师工作台</h2>
     </section>
   )
@@ -342,7 +341,7 @@ export default function TeacherPage() {
     return (
       <>
         <Navbar user={null} onLogout={handleLogout} scrolled={scrolled} />
-        <div className="app-loading" style={{ minHeight: '100vh' }}><div className="app-loading__spinner" /></div>
+        <div className="app-loading"><div className="app-loading__spinner" /></div>
       </>
     )
   }
@@ -350,41 +349,25 @@ export default function TeacherPage() {
   // 未登录：完整 Landing 风格登录页
   if (!user) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <div className="teacher-layout">
         <Navbar user={null} onLogout={handleLogout} scrolled={scrolled} />
         <Hero onStart={handleStart} />
-        <section id="teacher-login" className="features" style={{ paddingTop: 40 }}>
+        <section id="teacher-login" className="features teacher-login-section">
           <h2 className="features__title">教师登录</h2>
-          <div style={{ maxWidth: 400, margin: '0 auto' }}>
-            <div style={{ background: '#fff', borderRadius: 20, padding: '36px 28px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.06)' }}>
+          <div className="teacher-login">
+            <div className="teacher-login__card">
               <form onSubmit={handleLoginSubmit}>
                 <input
-                  style={{
-                    width: '100%', padding: '16px 18px', fontSize: 16, borderRadius: 14,
-                    border: '2px solid #e8e8ed', outline: 'none', textAlign: 'center',
-                    boxSizing: 'border-box', background: '#f5f5f7', color: '#1d1d1f',
-                    transition: 'border-color 0.2s, background 0.2s', fontWeight: 500,
-                  }}
+                  className="teacher-login__input"
                   placeholder="请输入工号"
                   value={loginId}
                   onChange={e => { setLoginId(e.target.value); setLoginError('') }}
-                  onFocus={e => { e.target.style.borderColor = '#6C2D82'; e.target.style.background = '#fff' }}
-                  onBlur={e => { e.target.style.borderColor = '#e8e8ed'; e.target.style.background = '#f5f5f7' }}
                   disabled={logging} autoFocus
                 />
-                {loginError && <p style={{ color: '#dc2626', fontSize: 14, marginTop: 12, textAlign: 'center' }}>{loginError}</p>}
-                <button type="submit" disabled={logging || !loginId.trim()}
-                  style={{
-                    marginTop: 16, width: '100%', padding: '16px', fontSize: 16, fontWeight: 600,
-                    color: '#fff',
-                    background: loginId.trim() && !logging ? 'linear-gradient(135deg, #6C2D82, #8B5CF6)' : '#d4b3df',
-                    border: 'none', borderRadius: 14,
-                    cursor: loginId.trim() && !logging ? 'pointer' : 'default',
-                    transition: 'opacity 0.2s',
-                  }}
-                  onMouseEnter={e => { if (!logging && loginId.trim()) e.target.style.opacity = '0.9' }}
-                  onMouseLeave={e => { if (!logging && loginId.trim()) e.target.style.opacity = '1' }}
-                >{logging ? '登录中…' : '登录'}</button>
+                {loginError && <p className="teacher-login__error">{loginError}</p>}
+                <button type="submit" className="teacher-login__btn" disabled={logging || !loginId.trim()}>
+                  {logging ? '登录中…' : '登录'}
+                </button>
               </form>
             </div>
           </div>
@@ -396,12 +379,12 @@ export default function TeacherPage() {
 
   // 已登录：教师工作台
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#f5f5f7' }}>
+    <div className="teacher-layout">
       <Navbar user={user} onLogout={handleLogout} scrolled={scrolled} />
       <TeacherHero />
-      <section id="teacher-dashboard" className="features" style={{ paddingTop: 0 }}>
-        <div className="teacher-body" style={{ display: 'flex', gap: 24, padding: 0 }}>
-          <aside className="teacher-sidebar" style={{ width: 200, background: '#fff', borderRadius: 16, border: '1px solid #e5e5ea', padding: '12px 0', flexShrink: 0 }}>
+      <section id="teacher-dashboard" className="features features--flush-top">
+        <div className="teacher-body">
+          <aside className="teacher-sidebar">
             <button className={`teacher-sidebar__btn ${tab === 'students' ? 'teacher-sidebar__btn--active' : ''}`}
               onClick={() => { setTab('students'); setSelectedStudent(null) }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -413,14 +396,14 @@ export default function TeacherPage() {
               知识库
             </button>
           </aside>
-          <main className="teacher-main" style={{ flex: 1, background: 'transparent', padding: 0 }}>
+          <main className="teacher-main">
             {tab === 'students' && (
               selectedStudent
                 ? <StudentDetail studentId={selectedStudent} subject={subject} onBack={() => setSelectedStudent(null)} />
                 : (
                   <>
                     <div className="teacher-main__header">
-                      <h2 className="teacher-main__title" style={{ marginBottom: 0 }}>学生提问</h2>
+                      <h2 className="teacher-main__title">学生提问</h2>
                       <div className="subject-filter">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
                         <select value={subject} onChange={e => { setSubject(e.target.value); setSelectedStudent(null) }} className="subject-filter__select">

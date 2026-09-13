@@ -1,27 +1,54 @@
 :root {
+  /* ── 品牌色 ───────────────────────────────── */
   --accent: #6C2D82;
   --accent-hover: #7B3F9E;
   --accent-active: #5A236D;
+  --accent-disabled: #d4b3df;
   --accent-glow: rgba(108, 45, 130, 0.3);
+  --accent-soft: #f0e6f5;
+  --accent-tint: rgba(108, 45, 130, 0.06);
+  --accent-tint-hover: rgba(108, 45, 130, 0.12);
+
+  /* ── 背景 / 表面 ──────────────────────────── */
   --bg: #f5f5f7;
   --bg-chat: #fafafa;
   --bg-card: #ffffff;
+
+  /* ── 文字 ─────────────────────────────────── */
   --text-primary: #1d1d1f;
+  --text-body: #3a3a3c;
   --text-secondary: #6e6e73;
-  --text-tertiary: #86868b;
+  --text-tertiary: #75757c;
   --text-inverse: #ffffff;
+
+  /* ── 边框 ─────────────────────────────────── */
   --border: #d2d2d7;
   --border-light: #e8e8ed;
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04);
-  --shadow-lg: 0 12px 50px rgba(0,0,0,0.08);
+
+  /* ── 语义色 ───────────────────────────────── */
+  --success: #1b7e3c;
+  --success-bg: #e6f7ed;
+  --success-border: #bbf7d0;
+  --danger: #c41e3a;
+  --danger-bg: #fde8ec;
+  --danger-border: #fecaca;
+
+  /* ── 圆角:只用两档 ─────────────────────────── */
+  --radius-sm: 6px;   /* 控件、输入框、小元素 */
+  --radius-md: 10px;  /* 卡片、面板、气泡 */
+
+  /* ── 焦点 / 动效 ──────────────────────────── */
+  --focus-ring: 0 0 0 3px var(--accent-glow);
   --transition: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* 内容列宽度 —— 导航与各节共用同一左边缘 */
+  --container: 1400px;
+  /* 流式左右留白:窄屏 24px,超宽屏最多 48px,避免内容贴边或过窄 */
+  --gutter: clamp(24px, 4vw, 48px);
+
   --font: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display",
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
 }
 
 *,
@@ -62,6 +89,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -75,12 +103,160 @@ button {
   font-family: inherit;
   cursor: pointer;
   border: none;
-  outline: none;
   background: none;
   font-size: inherit;
 }
 
-input, textarea {
+input,
+textarea,
+select {
   font-family: inherit;
+}
+
+/* =============================================
+   可访问性 — 键盘焦点
+   ============================================= */
+:is(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:is(input, textarea, select):focus-visible {
   outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+
+/* =============================================
+   Markdown 正文样式
+   三处渲染容器共用一套规则,避免各写一遍:
+   - .chat-msg__bubble        学生端对话气泡
+   - .question-item__answer   教师端「AI 回答」
+   - .knowledge-entry__content 教师端知识库条目
+   ============================================= */
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) {
+  word-break: break-word;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) p {
+  margin-bottom: 8px;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) p:last-child {
+  margin-bottom: 0;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) :is(ul, ol) {
+  margin: 6px 0;
+  padding-left: 20px;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) li {
+  margin-bottom: 4px;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) code {
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) pre {
+  margin: 10px 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) pre code {
+  display: block;
+  padding: 14px 16px;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) :is(h1, h2, h3, h4) {
+  margin-top: 14px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) h1 { font-size: 18px; }
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) h2 { font-size: 16px; }
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) h3 { font-size: 15px; }
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) blockquote {
+  margin: 8px 0;
+  padding: 6px 12px;
+  border-left: 3px solid var(--accent);
+  color: var(--text-secondary);
+  background: rgba(108, 45, 130, 0.04);
+  border-radius: 0 6px 6px 0;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 14px;
+  display: block;
+  overflow-x: auto;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) :is(th, td) {
+  padding: 8px 12px;
+  border: 1px solid var(--border-light);
+  text-align: left;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) th {
+  background: var(--accent-tint);
+  font-weight: 600;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) hr {
+  margin: 14px 0;
+  border: none;
+  border-top: 1px solid var(--border-light);
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) img {
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+}
+
+/* 长公式在窄屏可横向滚动,不再撑破容器 */
+:is(.chat-msg__bubble, .question-item__answer, .knowledge-entry__content) .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+/* =============================================
+   动效降级 — 系统开启「减弱动态效果」时禁用
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

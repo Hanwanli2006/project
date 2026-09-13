@@ -6,6 +6,7 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeHighlight from 'rehype-highlight'
 import remarkDisplayInlineMath from '../remark-display-inline-math.js'
+import { IconQa, IconGraph, IconDoc, IconLock } from '../icons'
 import 'katex/dist/katex.min.css'
 import '../App.css'
 
@@ -129,20 +130,20 @@ const ChatInput = forwardRef(function ChatInput({ onSend, disabled }, ref) {
         {image && (
           <div className="chat-input__image-preview">
             <img src={image.preview} alt="预览" />
-            <button type="button" className="chat-input__image-remove" onClick={() => { URL.revokeObjectURL(image.preview); setImage(null) }}>×</button>
+            <button type="button" className="chat-input__image-remove" onClick={() => { URL.revokeObjectURL(image.preview); setImage(null) }} aria-label="移除图片">×</button>
           </div>
         )}
         {converting && (
-          <div className="chat-input__image-preview" style={{ alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 13, color: '#86868b' }}>正在转换文件…</span>
+          <div className="chat-input__file-chip chat-input__file-chip--muted">
+            <span>正在转换文件…</span>
           </div>
         )}
         {docFile && (
-          <div className="chat-input__image-preview" style={{ alignItems: 'center', gap: 8 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <span style={{ fontSize: 13, color: '#3a3a3c' }}>{docFile.name}</span>
-            <span style={{ fontSize: 12, color: '#86868b' }}>(已提取文字)</span>
-            <button type="button" className="chat-input__image-remove" onClick={() => setDocFile(null)}>×</button>
+          <div className="chat-input__file-chip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>{docFile.name}</span>
+            <span className="chat-input__file-chip__note">(已提取文字)</span>
+            <button type="button" className="chat-input__image-remove" onClick={() => setDocFile(null)} aria-label="移除文件">×</button>
           </div>
         )}
         <textarea ref={ref || textareaRef} className="chat-input__field" placeholder="输入你的问题… 也可以上传 PDF/Word 文件提问"
@@ -153,15 +154,15 @@ const ChatInput = forwardRef(function ChatInput({ onSend, disabled }, ref) {
           disabled={disabled} rows={1} />
       </div>
       <div className="chat-input__actions">
-        <button type="button" className="chat-input__attach" onClick={() => fileInputRef.current?.click()} disabled={disabled} title="上传图片">
+        <button type="button" className="chat-input__attach" onClick={() => fileInputRef.current?.click()} disabled={disabled} title="上传图片" aria-label="上传图片">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         </button>
         <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageSelect} hidden />
-        <button type="button" className="chat-input__attach" onClick={() => docInputRef.current?.click()} disabled={disabled || converting} title="上传文件（PDF/Word/PPT等）">
+        <button type="button" className="chat-input__attach" onClick={() => docInputRef.current?.click()} disabled={disabled || converting} title="上传文件（PDF/Word/PPT等）" aria-label="上传文件">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </button>
         <input ref={docInputRef} type="file" accept=".pdf,.docx,.pptx,.xlsx,.txt,.html,.md,.csv,.json,.xml" onChange={handleDocSelect} hidden />
-        <button type="submit" className="chat-input__btn" disabled={(!text.trim() && !image && !docFile) || disabled || converting}>
+        <button type="submit" className="chat-input__btn" aria-label="发送" disabled={(!text.trim() && !image && !docFile) || disabled || converting}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/></svg>
         </button>
       </div>
@@ -258,7 +259,6 @@ function AuthBanner({ status }) {
 function Hero({ onStartChat }) {
   return (
     <section id="hero" className="hero">
-      <div className="hero__bg" />
       <div className="hero__content">
         <p className="hero__badge">南开大学 · 智能助教</p>
         <h1 className="hero__title">你的学习伙伴，<br />随时在线。</h1>
@@ -270,17 +270,19 @@ function Hero({ onStartChat }) {
 }
 
 const FEATURES = [
-  { title: '课程答疑', desc: '高数、线代、大物、编程…… 各科问题即时解答。', icon: '📚' },
-  { title: '知识梳理', desc: '生成思维导图、知识图谱，帮你构建学科体系。', icon: '🧠' },
-  { title: '学术辅助', desc: '文献摘要、论文润色、开题思路，科研路上的好帮手。', icon: '📝' },
+  { title: '课程答疑', desc: '高数、线代、大物、编程…… 各科问题即时解答。', Icon: IconQa },
+  { title: '知识梳理', desc: '生成思维导图、知识图谱，帮你构建学科体系。', Icon: IconGraph },
+  { title: '学术辅助', desc: '文献摘要、论文润色、开题思路，科研路上的好帮手。', Icon: IconDoc },
 ]
 
-function FeatureCard({ title, desc, icon, i }) {
+function FeatureRow({ title, desc, Icon }) {
   return (
-    <div className="feature-card" style={{ animationDelay: `${i * 0.1}s` }}>
-      <div className="feature-card__icon" style={{ fontSize: 28 }}>{icon}</div>
-      <h3 className="feature-card__title">{title}</h3>
-      <p className="feature-card__desc">{desc}</p>
+    <div className="feature-row">
+      <div className="feature-row__icon"><Icon /></div>
+      <div className="feature-row__body">
+        <h3 className="feature-row__title">{title}</h3>
+        <p className="feature-row__desc">{desc}</p>
+      </div>
     </div>
   )
 }
@@ -289,7 +291,7 @@ function Features() {
   return (
     <section id="features" className="features">
       <h2 className="features__title">它能做什么</h2>
-      <div className="features__grid">{FEATURES.map((f, i) => <FeatureCard key={f.title} {...f} i={i} />)}</div>
+      <div className="features__grid">{FEATURES.map(f => <FeatureRow key={f.title} {...f} />)}</div>
     </section>
   )
 }
@@ -300,7 +302,7 @@ function LoginPrompt({ onLogin, onDevLogin, devError }) {
   return (
     <div className="login-prompt">
       <div className="login-prompt__card">
-        <div className="login-prompt__icon" style={{ fontSize: 48, opacity: 0.5 }}>🔒</div>
+        <div className="login-prompt__icon"><IconLock /></div>
         <h3 className="login-prompt__title">请先登录</h3>
         <p className="login-prompt__desc">使用南开大学统一身份认证登录后即可使用 AI-NKU</p>
         <button className="login-prompt__btn" onClick={onLogin}>统一身份认证登录</button>
@@ -339,9 +341,9 @@ function Navbar({ user, onLogin, onLogout, hidden }) {
               <button className="navbar__logoutBtn" onClick={onLogout}>退出</button>
             </div>
           ) : (
-            <div style={{ display: 'flex', gap: 8 }}>
+            <div className="navbar__auth-actions">
               <button className="navbar__loginBtn" onClick={onLogin}>统一认证</button>
-              <a href="#chat" className="navbar__loginBtn" style={{ background: 'transparent', color: '#6C2D82', border: '1px solid #6C2D82' }}>学号登录</a>
+              <a href="#chat" className="navbar__loginBtn navbar__loginBtn--ghost">学号登录</a>
             </div>
           )}
         </div>
@@ -523,14 +525,9 @@ export default function StudentPage() {
                   <div className="quick-questions__grid">
                     {QUICK_QUESTIONS.map(q => <button key={q} className="quick-questions__btn" onClick={() => handleQuick(q)}>{q}</button>)}
                   </div>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 12 }}>
-                    <span style={{ fontSize: 13, color: '#86868b' }}>学科：</span>
-                    <select value={subject} onChange={e => setSubject(e.target.value)}
-                      style={{
-                        flex: 1, padding: '8px 12px', fontSize: 14, borderRadius: 8,
-                        border: '1px solid #d2d2d7', background: '#fff', color: '#1d1d1f',
-                        outline: 'none', cursor: 'pointer',
-                      }}>
+                  <div className="subject-picker">
+                    <span className="subject-picker__label">学科：</span>
+                    <select className="subject-select" value={subject} onChange={e => setSubject(e.target.value)}>
                       {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
@@ -545,22 +542,16 @@ export default function StudentPage() {
                   </div>
                 )}
                 <ExportBar messages={messages} onNewChat={handleNewChat} />
-                <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
-                  <button onClick={toggleHistory} style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 5,
-                    fontSize: 12, fontWeight: 500, color: '#86868b',
-                    padding: '6px 14px', borderRadius: 8,
-                    background: '#fff', border: '1px solid #e8e8ed',
-                    cursor: 'pointer',
-                  }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div className="history-toolbar">
+                  <button className="history-toggle" onClick={toggleHistory}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     历史记录
                   </button>
                 </div>
                 {showHistory && (
-                  <div className="memories-panel" style={{ marginTop: 8 }}>
+                  <div className="memories-panel history-panel">
                     <div className="memories-panel__header">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                       提问历史
                     </div>
                     {loadingHistory ? (
@@ -568,22 +559,18 @@ export default function StudentPage() {
                     ) : history.length === 0 ? (
                       <p className="memories-panel__empty">还没有提问记录</p>
                     ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      <div className="history-list">
                         {history.map((h, i) => (
-                          <div key={h.id} style={{
-                            fontSize: 13, color: '#3a3a3c', lineHeight: 1.5,
-                            padding: '10px 12px', borderRadius: 8,
-                            background: '#fff', border: '1px solid #e8e8ed',
-                          }}>
-                            <div style={{ fontWeight: 600, color: '#6C2D82', fontSize: 12, marginBottom: 4 }}>
+                          <div key={h.id} className="history-item">
+                            <div className="history-item__head">
                               问题 {history.length - i}
-                              <span style={{ color: '#86868b', fontWeight: 400, marginLeft: 8 }}>{new Date(h.timestamp).toLocaleString('zh-CN')}</span>
+                              <span className="history-item__time">{new Date(h.timestamp).toLocaleString('zh-CN')}</span>
                             </div>
-                            <div style={{ marginBottom: 6 }}>{h.question}</div>
+                            <div className="history-item__question">{h.question}</div>
                             {h.answer && (
                               <details>
-                                <summary style={{ cursor: 'pointer', color: '#6C2D82', fontSize: 12 }}>查看回答</summary>
-                                <div style={{ marginTop: 6, color: '#6e6e73', whiteSpace: 'pre-wrap', fontSize: 12, maxHeight: 200, overflowY: 'auto' }}>{h.answer}</div>
+                                <summary className="history-item__summary">查看回答</summary>
+                                <div className="history-item__answer">{h.answer}</div>
                               </details>
                             )}
                           </div>
@@ -605,7 +592,7 @@ export default function StudentPage() {
         <div className="chat-input-bar__row">
           <ChatInput ref={inputRef} onSend={handleSend} disabled={loading} />
           <button className={`chat-input__memory-btn ${showMemories ? 'chat-input__memory-btn--active' : ''}`}
-            onClick={() => setShowMemories(v => !v)} title="AI 记忆">
+            onClick={() => setShowMemories(v => !v)} title="AI 记忆" aria-label="AI 记忆">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M16 14H8a4 4 0 0 0-4 4v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2a4 4 0 0 0-4-4z"/></svg>
             {memories.length > 0 && <span className="chat-input__memory-badge">{memories.length}</span>}
           </button>

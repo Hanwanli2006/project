@@ -3,21 +3,31 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f5f7;
+  background: var(--bg);
 }
 
 .teacher-body {
   display: flex;
-  flex: 1;
-  padding-top: 56px;
+  gap: 24px;
+}
+
+/* 复用 .features 版式的教师端分节 */
+.features.teacher-hero {
+  padding-top: 80px;
+  padding-bottom: 40px;
+}
+
+.features.teacher-login-section {
+  padding-top: 40px;
 }
 
 /* ── 侧边栏 ──────────────────────────────────── */
 .teacher-sidebar {
   width: 200px;
-  background: #fff;
-  border-right: 1px solid #e5e5ea;
-  padding: 16px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 0;
   flex-shrink: 0;
 }
 
@@ -30,34 +40,99 @@
   border: none;
   background: transparent;
   font-size: 14px;
-  color: #1d1d1f;
+  color: var(--text-primary);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
   text-align: left;
 }
 
 .teacher-sidebar__btn:hover {
-  background: #f5f5f7;
+  background: var(--bg);
 }
 
 .teacher-sidebar__btn--active {
-  background: #f0e6f5;
-  color: #6C2D82;
+  background: var(--accent-soft);
+  color: var(--accent);
   font-weight: 600;
 }
 
 /* ── 主内容 ──────────────────────────────────── */
 .teacher-main {
   flex: 1;
-  padding: 24px 32px;
+  min-width: 0;
   overflow-y: auto;
 }
 
 .teacher-main__title {
   font-size: 22px;
   font-weight: 700;
-  color: #1d1d1f;
+  color: var(--text-primary);
   margin-bottom: 20px;
+}
+
+/* 标题位于同行 header 内时不再撑开下方间距 */
+.teacher-main__header .teacher-main__title,
+.knowledge-header .teacher-main__title {
+  margin-bottom: 0;
+}
+
+/* ── 教师登录页(未登录)─────────────────────── */
+.teacher-login {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.teacher-login__card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 32px 26px;
+  border: 1px solid var(--border-light);
+}
+
+.teacher-login__input {
+  width: 100%;
+  padding: 16px 18px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-light);
+  background: var(--bg);
+  color: var(--text-primary);
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.teacher-login__input:focus {
+  border-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.teacher-login__error {
+  color: var(--danger);
+  font-size: 14px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.teacher-login__btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-inverse);
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+
+.teacher-login__btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.teacher-login__btn:disabled {
+  background: var(--accent-disabled);
+  cursor: default;
 }
 
 /* ── 学生列表 ────────────────────────────────── */
@@ -68,20 +143,19 @@
 }
 
 .student-card {
-  background: #fff;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  transition: box-shadow 0.15s, transform 0.15s;
-  border: 1px solid #e5e5ea;
+  transition: border-color 0.15s;
+  border: 1px solid var(--border-light);
 }
 
 .student-card:hover {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  transform: translateY(-1px);
+  border-color: var(--border);
 }
 
 .student-card__info {
@@ -93,24 +167,25 @@
 .student-card__id {
   font-weight: 600;
   font-size: 15px;
-  color: #1d1d1f;
+  color: var(--text-primary);
 }
 
 .student-card__meta {
   font-size: 13px;
-  color: #86868b;
+  color: var(--text-tertiary);
 }
 
 .student-card__count {
-  background: #f0e6f5;
-  color: #6C2D82;
+  background: var(--accent-soft);
+  color: var(--accent);
   font-size: 13px;
   font-weight: 600;
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
 }
 
-/* ── 学生详情（问题列表）────────────────────── */
+/* ── 学生详情(问题列表)────────────────────── */
 .question-detail {
   max-width: 800px;
 }
@@ -121,25 +196,27 @@
   gap: 6px;
   padding: 8px 16px;
   background: none;
-  border: 1px solid #d2d2d7;
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   font-size: 14px;
-  color: #1d1d1f;
+  color: var(--text-primary);
   cursor: pointer;
   margin-bottom: 20px;
-  transition: background 0.15s;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .question-detail__back:hover {
-  background: #f5f5f7;
+  background: var(--bg);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .question-item {
-  background: #fff;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 20px;
   margin-bottom: 12px;
-  border: 1px solid #e5e5ea;
+  border: 1px solid var(--border-light);
 }
 
 .question-item__q {
@@ -149,7 +226,7 @@
 .question-item__label {
   font-size: 12px;
   font-weight: 600;
-  color: #6C2D82;
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 6px;
@@ -157,31 +234,31 @@
 
 .question-item__text {
   font-size: 15px;
-  color: #1d1d1f;
+  color: var(--text-primary);
   line-height: 1.6;
   white-space: pre-wrap;
 }
 
 .question-item__a {
   padding-top: 12px;
-  border-top: 1px solid #e5e5ea;
+  border-top: 1px solid var(--border-light);
 }
 
 .question-item__answer {
   font-size: 14px;
-  color: #3a3a3c;
+  color: var(--text-body);
   line-height: 1.6;
 }
 
 .question-item__time {
   font-size: 12px;
-  color: #86868b;
+  color: var(--text-tertiary);
   margin-top: 8px;
 }
 
 .question-empty {
   text-align: center;
-  color: #86868b;
+  color: var(--text-tertiary);
   padding: 60px 20px;
   font-size: 15px;
 }
@@ -194,15 +271,21 @@
   margin-bottom: 20px;
 }
 
+.knowledge-header__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .knowledge-add-btn {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 10px 20px;
-  background: #6C2D82;
-  color: #fff;
+  background: var(--accent);
+  color: var(--text-inverse);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -210,16 +293,16 @@
 }
 
 .knowledge-add-btn:hover {
-  background: #7B3F9E;
+  background: var(--accent-hover);
 }
 
 /* ── 添加表单 ────────────────────────────────── */
 .knowledge-form {
-  background: #fff;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 24px;
   margin-bottom: 20px;
-  border: 1px solid #e5e5ea;
+  border: 1px solid var(--border-light);
 }
 
 .knowledge-form__group {
@@ -230,7 +313,7 @@
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: #1d1d1f;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -240,19 +323,20 @@
   width: 100%;
   padding: 10px 14px;
   font-size: 14px;
-  border: 1px solid #d2d2d7;
-  border-radius: 8px;
-  outline: none;
-  transition: border-color 0.2s;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
   font-family: inherit;
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .knowledge-form__input:focus,
 .knowledge-form__select:focus,
 .knowledge-form__textarea:focus {
-  border-color: #6C2D82;
-  box-shadow: 0 0 0 3px rgba(108,45,130,0.1);
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
 }
 
 .knowledge-form__textarea {
@@ -268,31 +352,33 @@
 
 .knowledge-form__submit {
   padding: 10px 24px;
-  background: #6C2D82;
-  color: #fff;
+  background: var(--accent);
+  color: var(--text-inverse);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .knowledge-form__submit:hover {
-  background: #7B3F9E;
+  background: var(--accent-hover);
 }
 
 .knowledge-form__cancel {
   padding: 10px 24px;
-  background: #f5f5f7;
-  color: #1d1d1f;
-  border: 1px solid #d2d2d7;
-  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .knowledge-form__cancel:hover {
-  background: #e5e5ea;
+  background: var(--border-light);
 }
 
 /* ── 知识库条目列表 ──────────────────────────── */
@@ -303,38 +389,44 @@
 }
 
 .knowledge-entry {
-  background: #fff;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 16px 20px;
-  border: 1px solid #e5e5ea;
+  border: 1px solid var(--border-light);
+  transition: border-color 0.15s;
+}
+
+.knowledge-entry:hover {
+  border-color: var(--border);
 }
 
 .knowledge-entry__header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
 }
 
 .knowledge-entry__title {
   font-weight: 600;
   font-size: 15px;
-  color: #1d1d1f;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .knowledge-entry__course {
   display: inline-block;
   font-size: 12px;
-  color: #6C2D82;
-  background: #f0e6f5;
+  color: var(--accent);
+  background: var(--accent-soft);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   margin-bottom: 8px;
 }
 
 .knowledge-entry__content {
   font-size: 14px;
-  color: #3a3a3c;
+  color: var(--text-body);
   line-height: 1.6;
   max-height: 80px;
   overflow: hidden;
@@ -348,7 +440,7 @@
 .knowledge-entry__expand {
   background: none;
   border: none;
-  color: #6C2D82;
+  color: var(--accent);
   font-size: 13px;
   cursor: pointer;
   padding: 4px 0;
@@ -357,34 +449,34 @@
 
 .knowledge-entry__del {
   background: none;
-  border: 1px solid #ff3b30;
-  color: #ff3b30;
+  border: 1px solid var(--danger);
+  color: var(--danger);
   font-size: 13px;
   padding: 4px 12px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background 0.15s;
   white-space: nowrap;
 }
 
 .knowledge-entry__del:hover {
-  background: #fff0ef;
+  background: var(--danger-bg);
 }
 
 .knowledge-entry__time {
   font-size: 12px;
-  color: #86868b;
+  color: var(--text-tertiary);
   margin-top: 8px;
 }
 
 .knowledge-empty {
   text-align: center;
-  color: #86868b;
+  color: var(--text-tertiary);
   padding: 60px 20px;
   font-size: 15px;
 }
 
-/* ── 教师端 header 行（标题 + 学科筛选）────── */
+/* ── 教师端 header 行(标题 + 学科筛选)────── */
 .teacher-main__header {
   display: flex;
   justify-content: space-between;
@@ -399,16 +491,18 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #86868b;
+  color: var(--text-tertiary);
 }
 
 .subject-filter__select {
   padding: 8px 32px 8px 12px;
   font-size: 14px;
-  border: 1px solid #d2d2d7;
-  border-radius: 8px;
-  background: #fff url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center;
-  color: #1d1d1f;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card)
+    url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2375757c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat right 10px center;
+  color: var(--text-primary);
   outline: none;
   cursor: pointer;
   appearance: none;
@@ -419,8 +513,8 @@
 }
 
 .subject-filter__select:focus {
-  border-color: #6C2D82;
-  box-shadow: 0 0 0 3px rgba(108,45,130,0.1);
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
 }
 
 /* ── loading / error ─────────────────────────── */
@@ -429,139 +523,80 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #86868b;
+  color: var(--text-tertiary);
   font-size: 15px;
-}
-
-/* ── markdown 内容样式（AI 回答 / 知识库条目）────── */
-.question-item__answer,
-.knowledge-entry__content {
-  word-break: break-word;
-}
-.question-item__answer p,
-.knowledge-entry__content p {
-  margin-bottom: 8px;
-}
-.question-item__answer p:last-child,
-.knowledge-entry__content p:last-child {
-  margin-bottom: 0;
-}
-.question-item__answer ul,
-.question-item__answer ol,
-.knowledge-entry__content ul,
-.knowledge-entry__content ol {
-  margin: 6px 0;
-  padding-left: 20px;
-}
-.question-item__answer li,
-.knowledge-entry__content li {
-  margin-bottom: 4px;
-}
-.question-item__answer code,
-.knowledge-entry__content code {
-  font-size: 13px;
-  background: rgba(0, 0, 0, 0.06);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: "SF Mono", Menlo, Monaco, monospace;
-}
-.question-item__answer pre,
-.knowledge-entry__content pre {
-  margin: 10px 0;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.question-item__answer pre code,
-.knowledge-entry__content pre code {
-  display: block;
-  padding: 14px 16px;
-  background: #1e1e2e;
-  color: #cdd6f4;
-  font-size: 13px;
-  line-height: 1.5;
-  overflow-x: auto;
-  border-radius: 10px;
-}
-.question-item__answer h1,
-.question-item__answer h2,
-.question-item__answer h3,
-.question-item__answer h4,
-.knowledge-entry__content h1,
-.knowledge-entry__content h2,
-.knowledge-entry__content h3,
-.knowledge-entry__content h4 {
-  margin-top: 14px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-.question-item__answer h1,
-.knowledge-entry__content h1 { font-size: 18px; }
-.question-item__answer h2,
-.knowledge-entry__content h2 { font-size: 16px; }
-.question-item__answer h3,
-.knowledge-entry__content h3 { font-size: 15px; }
-.question-item__answer blockquote,
-.knowledge-entry__content blockquote {
-  margin: 8px 0;
-  padding: 6px 12px;
-  border-left: 3px solid #6C2D82;
-  color: #6e6e73;
-  background: rgba(108, 45, 130, 0.04);
-  border-radius: 0 6px 6px 0;
-}
-.question-item__answer table,
-.knowledge-entry__content table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 10px 0;
-  font-size: 14px;
-}
-.question-item__answer th,
-.question-item__answer td,
-.knowledge-entry__content th,
-.knowledge-entry__content td {
-  padding: 8px 12px;
-  border: 1px solid #e5e5ea;
-  text-align: left;
-}
-.question-item__answer th,
-.knowledge-entry__content th {
-  background: rgba(108, 45, 130, 0.06);
-  font-weight: 600;
-}
-.question-item__answer hr,
-.knowledge-entry__content hr {
-  margin: 14px 0;
-  border: none;
-  border-top: 1px solid #e5e5ea;
-}
-.question-item__answer a,
-.knowledge-entry__content a {
-  color: #6C2D82;
-  text-decoration: underline;
-}
-.question-item__answer img,
-.knowledge-entry__content img {
-  max-width: 100%;
-  border-radius: 8px;
 }
 
 /* ── 上传状态行 ─────────────────────────────── */
 .knowledge-upload-status {
   margin-top: 12px;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 13px;
   line-height: 1.5;
 }
 .knowledge-upload-status--success {
-  color: #15803d;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
 }
 .knowledge-upload-status--error {
-  color: #b91c1c;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+}
+
+/* =============================================
+   移动端(≤768px)—— 侧边栏改顶部横条
+   ============================================= */
+@media (max-width: 768px) {
+  .teacher-body {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .teacher-sidebar {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+  }
+
+  .teacher-sidebar__btn {
+    width: auto;
+    flex: 1;
+    justify-content: center;
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+  }
+
+  .teacher-main {
+    width: 100%;
+    overflow-y: visible;
+  }
+
+  .teacher-main__title {
+    font-size: 19px;
+  }
+
+  .knowledge-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .student-card {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .question-detail__back {
+    margin-bottom: 14px;
+  }
+
+  .knowledge-form {
+    padding: 18px 16px;
+  }
 }

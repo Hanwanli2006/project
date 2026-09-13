@@ -97,8 +97,8 @@ const uploadLimiter = rateLimit({
 
 // ── Role detection ────────────────────────────────────
 function detectRole(id) {
-  // 南开本科学号：10 位数字，以 2 开头（入学年份）
-  if (/^2\d{9}$/.test(id)) return 'student'
+  // 南开本科学号：以 2 开头（入学年份）的 7~10 位数字
+  if (/^2\d{6,9}$/.test(id)) return 'student'
   return 'teacher'
 }
 

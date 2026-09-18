@@ -1,13 +1,13 @@
 :root {
-  /* ── 品牌色 ───────────────────────────────── */
-  --accent: #6C2D82;
-  --accent-hover: #7B3F9E;
-  --accent-active: #5A236D;
-  --accent-disabled: #d4b3df;
-  --accent-glow: rgba(108, 45, 130, 0.3);
-  --accent-soft: #f0e6f5;
-  --accent-tint: rgba(108, 45, 130, 0.06);
-  --accent-tint-hover: rgba(108, 45, 130, 0.12);
+  /* ── 主色 ─────────────────────────────────── */
+  --accent: #5B2E9E;
+  --accent-hover: #6E3BB8;
+  --accent-active: #4A2182;
+  --accent-disabled: #c3aee0;
+  --accent-glow: rgba(91, 46, 158, 0.3);
+  --accent-soft: #ece4f7;
+  --accent-tint: rgba(91, 46, 158, 0.06);
+  --accent-tint-hover: rgba(91, 46, 158, 0.12);
 
   /* ── 背景 / 表面 ──────────────────────────── */
   --bg: #f5f5f7;
@@ -197,7 +197,7 @@ select {
   padding: 6px 12px;
   border-left: 3px solid var(--accent);
   color: var(--text-secondary);
-  background: rgba(108, 45, 130, 0.04);
+  background: rgba(91, 46, 158, 0.04);
   border-radius: 0 6px 6px 0;
 }
 

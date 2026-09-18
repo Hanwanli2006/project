@@ -208,7 +208,7 @@ function MemoriesPanel({ memories, onAdd, onDelete }) {
 
 function exportMarkdown(messages) {
   const date = new Date().toLocaleString('zh-CN')
-  let md = `# AI-NKU 对话记录\n\n导出时间：${date}\n\n---\n\n`
+  let md = `# 对话记录\n\n导出时间：${date}\n\n---\n\n`
   for (const m of messages) {
     const label = m.role === 'user' ? '你' : 'AI'
     md += `### ${label}\n\n${m.content}\n\n---\n\n`
@@ -217,7 +217,7 @@ function exportMarkdown(messages) {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `AI-NKU-对话记录-${new Date().toISOString().slice(0, 10)}.md`
+  a.download = `对话记录-${new Date().toISOString().slice(0, 10)}.md`
   a.click()
   URL.revokeObjectURL(url)
 }
@@ -260,9 +260,9 @@ function Hero({ onStartChat }) {
   return (
     <section id="hero" className="hero">
       <div className="hero__content">
-        <p className="hero__badge">南开大学 · 智能助教</p>
+        <p className="hero__badge">智能助教</p>
         <h1 className="hero__title">你的学习伙伴，<br />随时在线。</h1>
-        <p className="hero__subtitle">AI-NKU 为你解答课程疑问、梳理知识框架、辅助学术探索。</p>
+        <p className="hero__subtitle">为你解答课程疑问、梳理知识框架、辅助学术探索。</p>
         <button className="hero__cta" onClick={onStartChat}>开始对话</button>
       </div>
     </section>
@@ -304,7 +304,7 @@ function LoginPrompt({ onLogin, onDevLogin, devError }) {
       <div className="login-prompt__card">
         <div className="login-prompt__icon"><IconLock /></div>
         <h3 className="login-prompt__title">请先登录</h3>
-        <p className="login-prompt__desc">使用南开大学统一身份认证登录后即可使用 AI-NKU</p>
+        <p className="login-prompt__desc">使用统一身份认证登录后即可开始使用</p>
         <button className="login-prompt__btn" onClick={onLogin}>统一身份认证登录</button>
         <div className="login-prompt__dev">
           <p className="login-prompt__devLabel">开发模式：输入学号测试</p>
@@ -332,7 +332,7 @@ function Navbar({ user, onLogin, onLogout, hidden }) {
   return (
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''} ${hidden ? 'navbar--hidden' : ''}`}>
       <div className="navbar__inner">
-        <a href="/" className="navbar__logo">AI <span>NKU</span></a>
+        <a href="/" className="navbar__logo">智能<span>助教</span></a>
         <div className="navbar__links">
           <a href="#hero">首页</a><a href="#features">功能</a><a href="#chat">开始对话</a>
           {user ? (
@@ -598,7 +598,7 @@ export default function StudentPage() {
           </button>
         </div>
       </div>
-      <footer className="footer"><p>AI-NKU &mdash; 南开大学智能助教 · 演示版本</p></footer>
+      <footer className="footer"><p>智能助教 · 演示版本</p></footer>
     </>
   )
 }

@@ -235,7 +235,7 @@ function Navbar({ user, onLogout, scrolled }) {
   return (
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner">
-        <a href="/" className="navbar__logo">AI <span>NKU</span></a>
+        <a href="/" className="navbar__logo">智能<span>助教</span></a>
         <div className="navbar__links">
           <a href="/">首页</a>
           {user ? (
@@ -255,7 +255,7 @@ function Hero({ onStart }) {
   return (
     <section id="hero" className="hero">
       <div className="hero__content">
-        <p className="hero__badge">南开大学 · 教师端</p>
+        <p className="hero__badge">智能助教 · 教师端</p>
         <h1 className="hero__title">掌握学情，<br />管理知识。</h1>
         <p className="hero__subtitle">查看学生提问、管理知识库，辅助教学决策。</p>
         <button className="hero__cta" onClick={onStart}>进入教师端</button>
@@ -372,7 +372,7 @@ export default function TeacherPage() {
             </div>
           </div>
         </section>
-        <footer className="footer"><p>AI-NKU &mdash; 南开大学智能助教 · 演示版本</p></footer>
+        <footer className="footer"><p>智能助教 · 演示版本</p></footer>
       </div>
     )
   }
@@ -420,7 +420,7 @@ export default function TeacherPage() {
           </main>
         </div>
       </section>
-      <footer className="footer"><p>AI-NKU &mdash; 南开大学智能助教 · 演示版本</p></footer>
+      <footer className="footer"><p>智能助教 · 演示版本</p></footer>
     </div>
   )
 }

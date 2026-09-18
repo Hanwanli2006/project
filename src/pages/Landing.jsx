@@ -10,7 +10,7 @@ function Navbar({ user, onLogin, scrolled }) {
   return (
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner">
-        <a href="/" className="navbar__logo">AI <span>NKU</span></a>
+        <a href="/" className="navbar__logo">智能<span>助教</span></a>
         <div className="navbar__links">
           <a href="#hero">首页</a>
           <a href="#features">功能</a>
@@ -34,9 +34,9 @@ function Hero({ onStartChat }) {
   return (
     <section id="hero" className="hero">
       <div className="hero__content">
-        <p className="hero__badge">南开大学 · 智能助教</p>
+        <p className="hero__badge">智能助教</p>
         <h1 className="hero__title">你的学习伙伴，<br />随时在线。</h1>
-        <p className="hero__subtitle">AI-NKU 为你解答课程疑问、梳理知识框架、辅助学术探索。</p>
+        <p className="hero__subtitle">为你解答课程疑问、梳理知识框架、辅助学术探索。</p>
         <div className="hero__actions">
           <button className="hero__cta" onClick={onStartChat}>开始使用</button>
           <a href="#features" className="link-arrow">
@@ -187,13 +187,12 @@ function Footer() {
         </div>
         <div className="footer__col">
           <h4 className="footer__col-title">关于</h4>
-          <span>南开大学</span>
           <span>大学生创新创业项目</span>
           <span>演示版本</span>
         </div>
       </div>
       <div className="footer__legal">
-        <p>AI-NKU — 南开大学智能助教 · 演示版本</p>
+        <p>智能助教 · 演示版本</p>
       </div>
     </footer>
   )
